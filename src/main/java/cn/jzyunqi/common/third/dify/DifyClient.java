@@ -33,7 +33,7 @@ public class DifyClient {
     @Resource
     private DifyClientConfig difyClientConfig;
 
-    public BlockingChatData blockingChat(String difyId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
+    public BlockingChatData blockingChat(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
         ChatMsgParam chatMsgParam = new ChatMsgParam();
         chatMsgParam.setUser(userId);
         chatMsgParam.setInputs(customParams);
@@ -43,12 +43,12 @@ public class DifyClient {
         chatMsgParam.setConversationId(null);
         chatMsgParam.setFiles(null);
 
-        DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyId);
+        DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
         UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
         return difyApiProxy.blockingChat(uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey(), chatMsgParam);
     }
 
-    public Flux<StreamingChatData> streamingChat(String difyId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
+    public Flux<StreamingChatData> streamingChat(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
         ChatMsgParam chatMsgParam = new ChatMsgParam();
         chatMsgParam.setUser(userId);
         chatMsgParam.setInputs(customParams);
@@ -57,7 +57,7 @@ public class DifyClient {
         chatMsgParam.setAutoGenerateName(Boolean.TRUE);
         chatMsgParam.setConversationId(null);
         chatMsgParam.setFiles(null);
-        DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyId);
+        DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
         UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
         return difyStreamApiProxy.streamingChat(uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey(), chatMsgParam);
     }
