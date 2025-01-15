@@ -15,14 +15,11 @@
 ```
 * 配置自己的微信公众号信息
 ```java
-@Bean
+    @Bean
 public DifyClientConfig difyClientConfig() {
-    return new DifyClientConfig(
-            "xxxx",
-            "xxxx",
-            "xxxx",
-            "xxx",
-            "xxx"
+    return () -> List.of(
+            new DifyAuth("1", "https://dify.ai/v1", "app-xxxx"),
+            new DifyAuth("2", "https://dify.ai/v1", "app-yyyy")
     );
 }
 ```
