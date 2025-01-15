@@ -1,10 +1,5 @@
 package cn.jzyunqi.common.third.dify;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.List;
 
 /**
@@ -13,9 +8,6 @@ import java.util.List;
  */
 public interface DifyClientConfig {
 
-    /**
-     * 鉴权key
-     */
     List<DifyAuth> getDifyAuthList();
 
     default DifyAuth getDifyAuth(String id) {

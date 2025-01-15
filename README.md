@@ -13,9 +13,9 @@
 ```java
 @Import({DifyConfig.class})
 ```
-* 配置自己的微信公众号信息
+* 配置自己的Dify信息
 ```java
-    @Bean
+@Bean
 public DifyClientConfig difyClientConfig() {
     return () -> List.of(
             new DifyAuth("1", "https://api.dify.ai/v1", "app-xxxx"),
