@@ -17,10 +17,10 @@ import reactor.core.publisher.Flux;
  * @since 2025/1/10
  */
 @DifyHttpExchange
-@HttpExchange(url = "{scheme}://{host}/v1", contentType = "application/json; charset=utf-8")
+@HttpExchange(url = "{scheme}://{host}/{path}", contentType = "application/json; charset=utf-8")
 public interface DifyApiProxy {
 
     //发送对话消息
     @PostExchange(url = "/chat-messages", accept = {"application/json"})
-    BlockingChatData blockingChat(@PathVariable String scheme, @PathVariable String host, @RequestHeader("Authorization") String authorization, @RequestBody ChatMsgParam chatMsgParam) throws BusinessException;
+    BlockingChatData blockingChat(@PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestBody ChatMsgParam chatMsgParam) throws BusinessException;
 }

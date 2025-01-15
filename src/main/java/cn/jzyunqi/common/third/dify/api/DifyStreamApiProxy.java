@@ -16,11 +16,11 @@ import reactor.core.publisher.Flux;
  * @author wiiyaya
  * @since 2025/1/10
  */
-@HttpExchange(url = "{scheme}://{host}/v1", contentType = "application/json; charset=utf-8")
+@HttpExchange(url = "{scheme}://{host}/{path}", contentType = "application/json; charset=utf-8")
 public interface DifyStreamApiProxy {
 
     //发送对话消息
     @PostExchange(url = "/chat-messages", accept = {"application/json"})
-    Flux<StreamingChatData> streamingChat(@PathVariable String scheme, @PathVariable String host, @RequestHeader("Authorization") String authorization, @RequestBody ChatMsgParam chatMsgParam) throws BusinessException;
+    Flux<StreamingChatData> streamingChat(@PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestBody ChatMsgParam chatMsgParam) throws BusinessException;
 
 }

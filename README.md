@@ -18,8 +18,8 @@
     @Bean
 public DifyClientConfig difyClientConfig() {
     return () -> List.of(
-            new DifyAuth("1", "https://dify.ai/v1", "app-xxxx"),
-            new DifyAuth("2", "https://dify.ai/v1", "app-yyyy")
+            new DifyAuth("1", "https://api.dify.ai/v1", "app-xxxx"),
+            new DifyAuth("2", "https://api.dify.ai/v1", "app-yyyy")
     );
 }
 ```
