@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 public interface DifyStreamApiProxy {
 
     //发送对话消息
-    @PostExchange(url = "/chat-messages", accept = {"application/json"})
-    Flux<StreamingChatData> streamingChat(@PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestBody ChatMsgParam chatMsgParam) throws BusinessException;
+    @PostExchange(url = "/chat-messages", accept = {"text/event-stream"})
+    Flux<StreamingChatData> streamingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
 }

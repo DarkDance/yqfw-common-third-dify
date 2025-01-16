@@ -6,6 +6,7 @@ import cn.jzyunqi.common.third.dify.api.enums.ResponseMode;
 import cn.jzyunqi.common.third.dify.api.model.BlockingChatData;
 import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
 import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
+import cn.jzyunqi.common.third.dify.api.model.FileUploadData;
 import cn.jzyunqi.common.third.dify.api.model.StreamingChatData;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class DifyClient {
 
         DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
         UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
-        return difyApiProxy.blockingChat(uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey(), chatMsgParam);
+        return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
     }
 
     public Flux<StreamingChatData> streamingChat(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
@@ -59,6 +60,12 @@ public class DifyClient {
         chatMsgParam.setFiles(null);
         DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
         UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
-        return difyStreamApiProxy.streamingChat(uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey(), chatMsgParam);
+        return difyStreamApiProxy.streamingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
+    }
+
+    public FileUploadData uploadFile(String difyAuthId, String userId, org.springframework.core.io.Resource file) throws BusinessException {
+        DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+        UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+        return difyApiProxy.fileUpload(userId, file, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
     }
 }
