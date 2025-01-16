@@ -8,6 +8,7 @@ import cn.jzyunqi.common.third.dify.api.model.BlockingChatData;
 import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
 import cn.jzyunqi.common.third.dify.api.model.ConversationData;
 import cn.jzyunqi.common.third.dify.api.model.ConversationParam;
+import cn.jzyunqi.common.third.dify.api.model.FeedbackParam;
 import cn.jzyunqi.common.third.dify.api.model.FileUploadData;
 import cn.jzyunqi.common.third.dify.api.model.MessageData;
 import cn.jzyunqi.common.third.dify.api.model.SuggestedRsp;
@@ -43,15 +44,15 @@ public interface DifyApiProxy {
 
     //消息反馈（点赞）
     @PostExchange(url = "/messages/{messageId}/feedbacks")
-    DifyRspV2 messageFeedback(@PathVariable String messageId, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    DifyRspV2 messageFeedback(@PathVariable String messageId, @RequestBody FeedbackParam feedbackParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //获取下一轮建议问题列表
     @GetExchange(url = "/messages/{messageId}/suggested")
-    SuggestedRsp messageSuggest(@PathVariable String messageId, @RequestParam String user, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    SuggestedRsp messageSuggest(@RequestParam String user, @PathVariable String messageId, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //获取会话历史消息
     @GetExchange(url = "/messages")
-    DifyPageRsp<MessageData> messageList(@RequestParam("conversation_id") String conversationId, @RequestParam String user, @RequestParam("first_id") String firstId, @RequestParam Integer limit, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    DifyPageRsp<MessageData> messageList(@RequestParam String user, @RequestParam("conversation_id") String conversationId, @RequestParam("first_id") String firstId, @RequestParam Integer limit, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //获取会话列表
     @GetExchange(url = "/conversations")

@@ -3,7 +3,6 @@ package cn.jzyunqi.common.third.dify.api.model;
 import cn.jzyunqi.common.third.dify.api.enums.BelongsTo;
 import cn.jzyunqi.common.third.dify.api.enums.FileType;
 import cn.jzyunqi.common.third.dify.api.enums.Rating;
-import cn.jzyunqi.common.third.dify.api.enums.TransferMethod;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
