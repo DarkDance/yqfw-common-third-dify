@@ -23,6 +23,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,30 +49,30 @@ public class DifyClient {
     public final App app = new App();
 
     public class Chat {
-        public BlockingChatData blocking(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
+        public BlockingChatData blocking(String difyAuthId, String userId, String conversationId, Map<String, Object> customParams, String message, List<ChatMsgParam.FileInfo> files) throws BusinessException {
             ChatMsgParam chatMsgParam = new ChatMsgParam();
             chatMsgParam.setUser(userId);
             chatMsgParam.setInputs(customParams);
             chatMsgParam.setQuery(message);
             chatMsgParam.setResponseMode(ResponseMode.blocking);
             chatMsgParam.setAutoGenerateName(Boolean.TRUE);
-            chatMsgParam.setConversationId(null);
-            chatMsgParam.setFiles(null);
+            chatMsgParam.setConversationId(conversationId);
+            chatMsgParam.setFiles(files);
 
             DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
-        public Flux<StreamingChatData> streaming(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
+        public Flux<StreamingChatData> streaming(String difyAuthId, String userId, String conversationId, Map<String, Object> customParams, String message, List<ChatMsgParam.FileInfo> files) throws BusinessException {
             ChatMsgParam chatMsgParam = new ChatMsgParam();
             chatMsgParam.setUser(userId);
             chatMsgParam.setInputs(customParams);
             chatMsgParam.setQuery(message);
-            chatMsgParam.setResponseMode(ResponseMode.blocking);
+            chatMsgParam.setResponseMode(ResponseMode.streaming);
             chatMsgParam.setAutoGenerateName(Boolean.TRUE);
-            chatMsgParam.setConversationId(null);
-            chatMsgParam.setFiles(null);
+            chatMsgParam.setConversationId(conversationId);
+            chatMsgParam.setFiles(files);
 
             DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
