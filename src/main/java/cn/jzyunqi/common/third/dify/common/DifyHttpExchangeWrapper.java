@@ -1,7 +1,7 @@
 package cn.jzyunqi.common.third.dify.common;
 
 import cn.jzyunqi.common.exception.BusinessException;
-import cn.jzyunqi.common.third.dify.common.model.DifyRsp;
+import cn.jzyunqi.common.third.dify.common.model.DifyRspV1;
 import cn.jzyunqi.common.third.dify.common.utils.DifyFormatUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -36,7 +36,7 @@ public class DifyHttpExchangeWrapper {
             if(e.getCause() instanceof BusinessException be){
                 log.debug("======difyHttpExchange[{}] proceed success=======", proceedingJoinPoint.getSignature().getName());
                 String body = be.getCode();
-                DifyRsp difyRsp = DifyFormatUtils.OBJECT_MAPPER.readValue(body, DifyRsp.class);
+                DifyRspV1 difyRsp = DifyFormatUtils.OBJECT_MAPPER.readValue(body, DifyRspV1.class);
                 throw new BusinessException("common_error_dify_http_exchange_failed", difyRsp.getCode(), difyRsp.getMessage());
             }
             log.debug("======difyHttpExchange[{}] proceed throw exception=======", proceedingJoinPoint.getSignature().getName());

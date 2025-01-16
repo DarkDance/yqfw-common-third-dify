@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,15 +21,28 @@ import java.util.Map;
 public class StreamingChatData {
     private EventType event;
 
-    //message、message_replace
+    //message、agent_message、message_replace
     private String taskId;
     private String messageId;
     private String conversationId;
     private String answer;
     private String createdAt;
 
-    //message_file
+    //agent_thought
     private String id;
+    //private String taskId;
+    //private String messageId;
+    //private String conversationId;
+    private Integer position;
+    private String thought;
+    private String observation;
+    private String tool;
+    private String toolInput;
+    //private String createdAt;
+    private List<String> messageFiles;
+
+    //message_file
+    //private String id;
     private FileType type;
     private BelongsTo belongsTo;
     private String url;

@@ -5,6 +5,7 @@ import cn.jzyunqi.common.third.dify.api.model.BlockingChatData;
 import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
 import cn.jzyunqi.common.third.dify.api.model.StreamingChatData;
 import cn.jzyunqi.common.third.dify.common.DifyHttpExchange;
+import cn.jzyunqi.common.third.dify.common.model.DifyRspV2;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -22,5 +23,9 @@ public interface DifyStreamApiProxy {
     //发送对话消息
     @PostExchange(url = "/chat-messages", accept = {"text/event-stream"})
     Flux<StreamingChatData> streamingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+
+    //停止响应
+    @PostExchange(url = "/chat-messages/{taskId}/stop", accept = {"application/json"})
+    DifyRspV2 streamingChat(@PathVariable String taskId, @RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
 }

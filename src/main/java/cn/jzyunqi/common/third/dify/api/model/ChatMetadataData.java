@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class ChatMetadataData {
     private Usage usage;
-    private List<Retriever> retrieverResources;
+    private List<RetrieverData> retrieverResources;
 
     @Getter
     @Setter
@@ -33,19 +33,5 @@ public class ChatMetadataData {
         private String totalPrice;
         private String currency;
         private String latency;
-    }
-
-    @Getter
-    @Setter
-    @ToString
-    public static class Retriever {
-        private String position;
-        private String datasetId;
-        private String datasetName;
-        private String documentId;
-        private String documentName;
-        private String segmentId;
-        private String score;
-        private String content;
     }
 }
