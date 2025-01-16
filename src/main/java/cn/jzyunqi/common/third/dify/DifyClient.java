@@ -48,7 +48,7 @@ public class DifyClient {
     public final App app = new App();
 
     public class Chat {
-        public BlockingChatData blockingChat(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
+        public BlockingChatData blocking(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
             ChatMsgParam chatMsgParam = new ChatMsgParam();
             chatMsgParam.setUser(userId);
             chatMsgParam.setInputs(customParams);
@@ -63,7 +63,7 @@ public class DifyClient {
             return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
-        public Flux<StreamingChatData> streamingChat(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
+        public Flux<StreamingChatData> streaming(String difyAuthId, String userId, Map<String, Object> customParams, String message) throws BusinessException {
             ChatMsgParam chatMsgParam = new ChatMsgParam();
             chatMsgParam.setUser(userId);
             chatMsgParam.setInputs(customParams);
