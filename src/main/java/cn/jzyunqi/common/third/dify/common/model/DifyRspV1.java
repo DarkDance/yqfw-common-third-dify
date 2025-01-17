@@ -14,4 +14,5 @@ import lombok.ToString;
 public class DifyRspV1 {
     private String code;
     private String message;
+    private String status;
 }

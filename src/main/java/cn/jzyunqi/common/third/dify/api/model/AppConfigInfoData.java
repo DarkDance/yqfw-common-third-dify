@@ -39,9 +39,9 @@ public class AppConfigInfoData {
     @Setter
     @ToString
     public static class FormConfig {
-        private FileUploadConfig textInput;
-        private FileUploadConfig paragraph;
-        private FileUploadConfig select;
+        private FormFieldConfig textInput;
+        private FormFieldConfig paragraph;
+        private FormFieldConfig select;
     }
 
     @Getter
@@ -50,6 +50,7 @@ public class AppConfigInfoData {
     public static class FormFieldConfig {
         private String label;
         private String variable;
+        private String maxLength;
         private Boolean required;
         @JsonProperty("default")
         private String defaultOne;
