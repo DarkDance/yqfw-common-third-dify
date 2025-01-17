@@ -20,10 +20,10 @@ public class AppConfigInfoData {
     private String introduction;//也是开场白
     private List<String> suggestedQuestions;
 
-    private SwitchConfig suggestedQuestionsAfterAnswer;
-    private SwitchConfig speechToText;
-    private SwitchConfig retrieverResource;
-    private SwitchConfig annotationReply;
+    private FeatureConfig suggestedQuestionsAfterAnswer;
+    private FeatureConfig speechToText;
+    private FeatureConfig retrieverResource;
+    private FeatureConfig annotationReply;
     private List<FormConfig> userInputForm;
     private FileUploadConfig fileUpload;
     private SystemConfig systemParameters;
@@ -31,7 +31,7 @@ public class AppConfigInfoData {
     @Getter
     @Setter
     @ToString
-    public static class SwitchConfig {
+    public static class FeatureConfig {
         private Boolean enabled;
     }
 
