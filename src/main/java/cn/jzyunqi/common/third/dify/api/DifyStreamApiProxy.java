@@ -26,6 +26,6 @@ public interface DifyStreamApiProxy {
 
     //停止响应
     @PostExchange(url = "/chat-messages/{taskId}/stop", accept = {"application/json"})
-    DifyRspV2 streamingChat(@PathVariable String taskId, @RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    DifyRspV2 streamingChatStop(@PathVariable String taskId, @RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
 }

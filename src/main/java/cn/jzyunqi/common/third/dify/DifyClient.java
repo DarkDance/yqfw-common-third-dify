@@ -79,6 +79,14 @@ public class DifyClient {
             return difyStreamApiProxy.streamingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
+        public void streamingStop(String difyAuthId, String userId, String taskId) throws BusinessException {
+            ChatMsgParam chatMsgParam = new ChatMsgParam();
+            chatMsgParam.setUser(userId);
+
+            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            difyStreamApiProxy.streamingChatStop(taskId, chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
+        }
     }
 
     public class Msg {
