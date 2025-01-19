@@ -17,15 +17,15 @@ import reactor.core.publisher.Flux;
  * @author wiiyaya
  * @since 2025/1/10
  */
-@HttpExchange(url = "{scheme}://{host}/{path}", contentType = "application/json; charset=utf-8")
+@HttpExchange(url = "{scheme}://{host}:{port}/{path}", contentType = "application/json; charset=utf-8")
 public interface DifyStreamApiProxy {
 
     //发送对话消息
     @PostExchange(url = "/chat-messages", accept = {"text/event-stream"})
-    Flux<StreamingChatData> streamingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    Flux<StreamingChatData> streamingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //停止响应
     @PostExchange(url = "/chat-messages/{taskId}/stop", accept = {"application/json"})
-    DifyRspV2 streamingChatStop(@PathVariable String taskId, @RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    DifyRspV2 streamingChatStop(@PathVariable String taskId, @RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
 }
