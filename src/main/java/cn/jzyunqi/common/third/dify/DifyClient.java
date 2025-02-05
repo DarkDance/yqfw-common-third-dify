@@ -40,7 +40,7 @@ public class DifyClient {
     private DifyStreamApiProxy difyStreamApiProxy;
 
     @Resource
-    private DifyClientConfig difyClientConfig;
+    private DifyAuthRepository difyAuthRepository;
 
     public final Chat chat = new Chat();
     public final Msg msg = new Msg();
@@ -59,7 +59,7 @@ public class DifyClient {
             chatMsgParam.setConversationId(conversationId);
             chatMsgParam.setFiles(files);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -74,7 +74,7 @@ public class DifyClient {
             chatMsgParam.setConversationId(conversationId);
             chatMsgParam.setFiles(files);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyStreamApiProxy.streamingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -83,7 +83,7 @@ public class DifyClient {
             ChatMsgParam chatMsgParam = new ChatMsgParam();
             chatMsgParam.setUser(userId);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             difyStreamApiProxy.streamingChatStop(taskId, chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -96,19 +96,19 @@ public class DifyClient {
             feedbackParam.setRating(rating);
             feedbackParam.setContent(message);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             difyApiProxy.messageFeedback(messageId, feedbackParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public void nextSuggest(String difyAuthId, String userId, String messageId) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             difyApiProxy.messageSuggest(userId, messageId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public DifyPageRsp<MessageData> list(String difyAuthId, String userId, String conversationId, String firstMessageId, Integer limit) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.messageList(userId, conversationId, firstMessageId, limit, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -116,7 +116,7 @@ public class DifyClient {
 
     public class Conv {
         public DifyPageRsp<ConversationData> list(String difyAuthId, String userId, String lastConversationId, Integer limit, String sortBy) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.conversationList(userId, lastConversationId, limit, sortBy, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -125,7 +125,7 @@ public class DifyClient {
             ConversationParam conversationParam = new ConversationParam();
             conversationParam.setUser(userId);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             difyApiProxy.conversationDelete(conversationId, conversationParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -135,7 +135,7 @@ public class DifyClient {
             conversationParam.setUser(userId);
             conversationParam.setAutoGenerate(Boolean.TRUE);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.conversationRename(conversationId, conversationParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -146,7 +146,7 @@ public class DifyClient {
             conversationParam.setName(conversationName);
             conversationParam.setAutoGenerate(Boolean.FALSE);
 
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.conversationRename(conversationId, conversationParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -155,25 +155,25 @@ public class DifyClient {
     public class Tools {
 
         public FileUploadData uploadFile(String difyAuthId, String userId, org.springframework.core.io.Resource file) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.fileUpload(userId, file, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public AudioToTextData audioToText(String difyAuthId, String userId, org.springframework.core.io.Resource file) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.audioToText(userId, file, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public org.springframework.core.io.Resource messageToAudio(String difyAuthId, String userId, String messageId) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.textToAudio(userId, messageId, null, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public org.springframework.core.io.Resource textToAudio(String difyAuthId, String userId, String text) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.textToAudio(userId, null, text, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
@@ -182,19 +182,19 @@ public class DifyClient {
 
     public class App {
         public AppInfoData baseInfo(String difyAuthId, String userId) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.appInfo(userId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public AppConfigInfoData configInfo(String difyAuthId, String userId) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.appConfigInfo(userId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
         public String metaInfo(String difyAuthId, String userId) throws BusinessException {
-            DifyAuth difyAuth = difyClientConfig.getDifyAuth(difyAuthId);
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.appMetaInfo(userId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }

@@ -16,7 +16,7 @@
 * 配置自己的Dify信息
 ```java
 @Bean
-public DifyClientConfig difyClientConfig() {
+public DifyAuthRepository difyAuthRepository() {
     return () -> List.of(
             new DifyAuth("1", "https://api.dify.ai/v1", "app-xxxx"),
             new DifyAuth("2", "https://api.dify.ai/v1", "app-yyyy")

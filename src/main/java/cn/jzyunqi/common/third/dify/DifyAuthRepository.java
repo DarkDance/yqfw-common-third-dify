@@ -6,7 +6,7 @@ import java.util.List;
  * @author wiiyaya
  * @since 2025/1/10
  */
-public interface DifyClientConfig {
+public interface DifyAuthRepository {
 
     List<DifyAuth> getDifyAuthList();
 
