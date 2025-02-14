@@ -4,10 +4,12 @@ import cn.jzyunqi.common.exception.BusinessException;
 import cn.jzyunqi.common.third.dify.api.DifyStreamApiProxy;
 import cn.jzyunqi.common.third.dify.api.enums.Rating;
 import cn.jzyunqi.common.third.dify.api.enums.ResponseMode;
+import cn.jzyunqi.common.third.dify.api.enums.WorkflowStatus;
 import cn.jzyunqi.common.third.dify.api.model.AppConfigInfoData;
 import cn.jzyunqi.common.third.dify.api.model.AppInfoData;
 import cn.jzyunqi.common.third.dify.api.model.AudioToTextData;
 import cn.jzyunqi.common.third.dify.api.model.BlockingChatData;
+import cn.jzyunqi.common.third.dify.api.model.BlockingWorkflowData;
 import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
 import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
 import cn.jzyunqi.common.third.dify.api.model.ConversationData;
@@ -43,6 +45,7 @@ public class DifyClient {
     private DifyAuthRepository difyAuthRepository;
 
     public final Chat chat = new Chat();
+    public final Workflow workflow = new Workflow();
     public final Msg msg = new Msg();
     public final Conv conv = new Conv();
     public final Tools tools = new Tools();
@@ -86,6 +89,47 @@ public class DifyClient {
             DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             difyStreamApiProxy.streamingChatStop(taskId, chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
+        }
+    }
+
+    public class Workflow {
+        public BlockingWorkflowData blocking(String difyAuthId, String userId, Map<String, Object> customParams, List<ChatMsgParam.FileInfo> files) throws BusinessException {
+            ChatMsgParam chatMsgParam = new ChatMsgParam();
+            chatMsgParam.setInputs(customParams);
+            chatMsgParam.setResponseMode(ResponseMode.blocking);
+            chatMsgParam.setUser(userId);
+            chatMsgParam.setFiles(files);
+
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return difyApiProxy.blockingWorkflowRun(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public Flux<StreamingData> streaming(String difyAuthId, String userId, Map<String, Object> customParams, List<ChatMsgParam.FileInfo> files) throws BusinessException {
+            ChatMsgParam chatMsgParam = new ChatMsgParam();
+            chatMsgParam.setInputs(customParams);
+            chatMsgParam.setResponseMode(ResponseMode.streaming);
+            chatMsgParam.setUser(userId);
+            chatMsgParam.setFiles(files);
+
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return difyStreamApiProxy.streamingWorkflowRun(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public void streamingStop(String difyAuthId, String userId, String taskId) throws BusinessException {
+            ChatMsgParam chatMsgParam = new ChatMsgParam();
+            chatMsgParam.setUser(userId);
+
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            difyStreamApiProxy.streamingChatStop(taskId, chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public void logList(String difyAuthId, String keyword, WorkflowStatus status, Integer page, Integer limit) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            difyApiProxy.workflowsLogList(keyword, status, page, limit, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
     }
 
@@ -204,7 +248,7 @@ public class DifyClient {
         int port = uriComponents.getPort();
         if (port == -1) {
             return uriComponents.getScheme().equals("http") ? 80 : 443;
-        }else{
+        } else {
             return port;
         }
     }

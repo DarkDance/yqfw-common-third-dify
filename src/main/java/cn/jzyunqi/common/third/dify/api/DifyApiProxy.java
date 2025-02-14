@@ -95,6 +95,6 @@ public interface DifyApiProxy {
 
     //获取 workflow 日志
     @PostExchange(url = "/workflows/logs")
-    DifyPageRsp<WorkflowLog> logList(@RequestParam String keyword, @RequestParam WorkflowStatus status, @RequestParam Integer page, @RequestParam Integer limit, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    DifyPageRsp<WorkflowLog> workflowsLogList(@RequestParam String keyword, @RequestParam WorkflowStatus status, @RequestParam Integer page, @RequestParam Integer limit, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
 }
