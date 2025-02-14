@@ -15,7 +15,7 @@ import cn.jzyunqi.common.third.dify.api.model.ConversationParam;
 import cn.jzyunqi.common.third.dify.api.model.FeedbackParam;
 import cn.jzyunqi.common.third.dify.api.model.FileUploadData;
 import cn.jzyunqi.common.third.dify.api.model.MessageData;
-import cn.jzyunqi.common.third.dify.api.model.StreamingChatData;
+import cn.jzyunqi.common.third.dify.api.model.StreamingData;
 import cn.jzyunqi.common.third.dify.common.model.DifyPageRsp;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +64,7 @@ public class DifyClient {
             return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), uriComponents.getPath(), "Bearer " + difyAuth.getApiKey());
         }
 
-        public Flux<StreamingChatData> streaming(String difyAuthId, String userId, String conversationId, Map<String, Object> customParams, String message, List<ChatMsgParam.FileInfo> files) throws BusinessException {
+        public Flux<StreamingData> streaming(String difyAuthId, String userId, String conversationId, Map<String, Object> customParams, String message, List<ChatMsgParam.FileInfo> files) throws BusinessException {
             ChatMsgParam chatMsgParam = new ChatMsgParam();
             chatMsgParam.setUser(userId);
             chatMsgParam.setInputs(customParams);

@@ -1,10 +1,12 @@
 package cn.jzyunqi.common.third.dify.api;
 
 import cn.jzyunqi.common.exception.BusinessException;
+import cn.jzyunqi.common.third.dify.api.enums.WorkflowStatus;
 import cn.jzyunqi.common.third.dify.api.model.AppConfigInfoData;
 import cn.jzyunqi.common.third.dify.api.model.AppInfoData;
 import cn.jzyunqi.common.third.dify.api.model.AudioToTextData;
 import cn.jzyunqi.common.third.dify.api.model.BlockingChatData;
+import cn.jzyunqi.common.third.dify.api.model.BlockingWorkflowData;
 import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
 import cn.jzyunqi.common.third.dify.api.model.ConversationData;
 import cn.jzyunqi.common.third.dify.api.model.ConversationParam;
@@ -12,6 +14,7 @@ import cn.jzyunqi.common.third.dify.api.model.FeedbackParam;
 import cn.jzyunqi.common.third.dify.api.model.FileUploadData;
 import cn.jzyunqi.common.third.dify.api.model.MessageData;
 import cn.jzyunqi.common.third.dify.api.model.SuggestedRsp;
+import cn.jzyunqi.common.third.dify.api.model.WorkflowLog;
 import cn.jzyunqi.common.third.dify.common.DifyHttpExchange;
 import cn.jzyunqi.common.third.dify.common.model.DifyPageRsp;
 import cn.jzyunqi.common.third.dify.common.model.DifyRspV2;
@@ -85,5 +88,13 @@ public interface DifyApiProxy {
     //获取应用Meta信息
     @GetExchange(url = "/meta")
     String appMetaInfo(@RequestParam String user, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+
+    //执行 workflow
+    @PostExchange(url = "/workflows/run")
+    BlockingWorkflowData blockingWorkflowRun(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+
+    //获取 workflow 日志
+    @PostExchange(url = "/workflows/logs")
+    DifyPageRsp<WorkflowLog> logList(@RequestParam String keyword, @RequestParam WorkflowStatus status, @RequestParam Integer page, @RequestParam Integer limit, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
 }

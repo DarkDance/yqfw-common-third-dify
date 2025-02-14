@@ -14,7 +14,9 @@ import java.util.List;
 @Setter
 @ToString
 public class DifyPageRsp<T> {
+    private Integer page;
     private Integer limit;
+    private Integer total;
     private Boolean hasMore;
     private List<T> data;
 }

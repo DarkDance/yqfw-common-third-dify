@@ -18,7 +18,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-public class StreamingChatData {
+public class StreamingData {
     private EventType event;
 
     //message、agent_message、message_replace
