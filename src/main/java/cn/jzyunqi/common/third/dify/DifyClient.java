@@ -19,6 +19,7 @@ import cn.jzyunqi.common.third.dify.api.model.FileUploadData;
 import cn.jzyunqi.common.third.dify.api.model.MessageData;
 import cn.jzyunqi.common.third.dify.api.model.StreamingData;
 import cn.jzyunqi.common.third.dify.common.model.DifyPageRsp;
+import cn.jzyunqi.common.utils.StringUtilPlus;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.util.UriComponents;
@@ -247,7 +248,7 @@ public class DifyClient {
     private int defaultPort(UriComponents uriComponents) {
         int port = uriComponents.getPort();
         if (port == -1) {
-            return uriComponents.getScheme().equals("http") ? 80 : 443;
+            return StringUtilPlus.equalsIgnoreCase(uriComponents.getScheme(), "http") ? 80 : 443;
         } else {
             return port;
         }
