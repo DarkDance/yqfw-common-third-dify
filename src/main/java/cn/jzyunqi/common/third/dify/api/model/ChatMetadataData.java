@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -21,17 +22,17 @@ public class ChatMetadataData {
     @Setter
     @ToString
     public static class Usage {
-        private String promptTokens;
-        private String promptUnitPrice;
-        private String promptPriceUnit;
-        private String promptPrice;
-        private String completionTokens;
-        private String completionUnitPrice;
-        private String completionPriceUnit;
-        private String completionPrice;
-        private String totalTokens;
-        private String totalPrice;
+        private Integer promptTokens;
+        private BigDecimal promptUnitPrice;
+        private BigDecimal promptPriceUnit;
+        private BigDecimal promptPrice;
+        private Integer completionTokens;
+        private BigDecimal completionUnitPrice;
+        private BigDecimal completionPriceUnit;
+        private BigDecimal completionPrice;
+        private Integer totalTokens;
+        private BigDecimal totalPrice;
         private String currency;
-        private String latency;
+        private BigDecimal latency;
     }
 }
