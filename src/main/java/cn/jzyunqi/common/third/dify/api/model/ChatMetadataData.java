@@ -33,6 +33,6 @@ public class ChatMetadataData {
         private Integer totalTokens;
         private BigDecimal totalPrice;
         private String currency;
-        private BigDecimal latency;
+        private String latency;
     }
 }
