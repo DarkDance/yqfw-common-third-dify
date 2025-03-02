@@ -8,6 +8,7 @@ import cn.jzyunqi.common.third.dify.api.model.doc.DocFileData;
 import cn.jzyunqi.common.third.dify.api.model.doc.DocParam;
 import cn.jzyunqi.common.third.dify.api.model.doc.DocRsp;
 import cn.jzyunqi.common.third.dify.api.model.doc.RetrieveParam;
+import cn.jzyunqi.common.third.dify.api.model.doc.RetrieveRsp;
 import cn.jzyunqi.common.third.dify.api.model.doc.SegmentCreateReq;
 import cn.jzyunqi.common.third.dify.api.model.doc.SegmentRsp;
 import cn.jzyunqi.common.third.dify.common.DifyHttpExchange;
@@ -47,7 +48,7 @@ public interface DatasetApiProxy {
 
     //检索知识库
     @PostExchange(url = "/datasets/{datasetId}/retrieve")
-    DifyRspV1 retrieve(@PathVariable String datasetId, @RequestBody RetrieveParam retrieveParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    RetrieveRsp retrieve(@PathVariable String datasetId, @RequestBody RetrieveParam retrieveParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //通过文本创建文档
     @PostExchange(url = "/datasets/{datasetId}/document/create-by-text")
@@ -86,7 +87,7 @@ public interface DatasetApiProxy {
     SegmentRsp createDocSegment(@PathVariable String datasetId, @PathVariable String documentId, @RequestBody SegmentCreateReq segmentParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //更新文档分段
-    @PostExchange(url = "/datasets/{datasetId}/documents/{documentId}/segments/{segment_id}")
+    @PostExchange(url = "/datasets/{datasetId}/documents/{documentId}/segments/{segmentId}")
     SegmentRsp updateDocSegment(@PathVariable String datasetId, @PathVariable String documentId, @RequestParam String segmentId, @RequestBody SegmentCreateReq segmentParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
 
     //查询文档分段

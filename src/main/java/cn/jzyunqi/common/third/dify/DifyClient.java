@@ -1,6 +1,7 @@
 package cn.jzyunqi.common.third.dify;
 
 import cn.jzyunqi.common.exception.BusinessException;
+import cn.jzyunqi.common.third.dify.api.DatasetApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyStreamApiProxy;
 import cn.jzyunqi.common.third.dify.api.enums.Rating;
@@ -18,10 +19,30 @@ import cn.jzyunqi.common.third.dify.api.model.chat.FeedbackParam;
 import cn.jzyunqi.common.third.dify.api.model.chat.FileUploadData;
 import cn.jzyunqi.common.third.dify.api.model.chat.MessageData;
 import cn.jzyunqi.common.third.dify.api.model.chat.StreamingData;
+import cn.jzyunqi.common.third.dify.api.model.doc.DatasetData;
+import cn.jzyunqi.common.third.dify.api.model.doc.DatasetParam;
+import cn.jzyunqi.common.third.dify.api.model.doc.DocData;
+import cn.jzyunqi.common.third.dify.api.model.doc.DocFileData;
+import cn.jzyunqi.common.third.dify.api.model.doc.DocParam;
+import cn.jzyunqi.common.third.dify.api.model.doc.DocRsp;
+import cn.jzyunqi.common.third.dify.api.model.doc.RetrieveParam;
+import cn.jzyunqi.common.third.dify.api.model.doc.RetrieveRsp;
+import cn.jzyunqi.common.third.dify.api.model.doc.SegmentCreateReq;
+import cn.jzyunqi.common.third.dify.api.model.doc.SegmentRsp;
 import cn.jzyunqi.common.third.dify.common.model.DifyPageRsp;
+import cn.jzyunqi.common.third.dify.common.model.DifyRspV1;
+import cn.jzyunqi.common.third.dify.common.model.DifyRspV2;
 import cn.jzyunqi.common.utils.StringUtilPlus;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.service.annotation.DeleteExchange;
+import org.springframework.web.service.annotation.GetExchange;
+import org.springframework.web.service.annotation.PostExchange;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -44,6 +65,9 @@ public class DifyClient {
 
     @Resource
     private DifyAuthRepository difyAuthRepository;
+
+    @Resource
+    private DatasetApiProxy datasetApiProxy;
 
     public final Chat chat = new Chat();
     public final Workflow workflow = new Workflow();
@@ -250,12 +274,105 @@ public class DifyClient {
     }
 
     public class Dataset {
+        public DatasetData createEmptyDataset(String difyAuthId, DatasetParam data) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.createEmptyDataset(data, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public DifyPageRsp<DatasetData> getDatasetList(String difyAuthId, Integer page, Integer limit) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.getDatasetList(page, limit, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public void deleteDataset(String difyAuthId, String datasetId) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            datasetApiProxy.deleteDataset(datasetId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public RetrieveRsp retrieve(String difyAuthId, String datasetId, RetrieveParam retrieveParam) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.retrieve(datasetId, retrieveParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
     }
 
     public class Doc {
+        public DocRsp createDocByText(String difyAuthId, String datasetId, DocParam docParam) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.createDocByText(datasetId, docParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public DocRsp updateDocByText(String difyAuthId, String datasetId, String documentId, DocParam docParam) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.updateDocByText(datasetId, documentId, docParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public DocRsp createDocByFile(String difyAuthId, String datasetId, DocParam data, org.springframework.core.io.Resource file) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.createDocByFile(datasetId, data, file, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public DocFileData getDocFile(String difyAuthId, String datasetId, String documentId) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.getDocFile(datasetId, documentId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public DocRsp updateDocByFile(String difyAuthId, String datasetId, String documentId, DocParam data, org.springframework.core.io.Resource file) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.updateDocByFile(datasetId, documentId, data, file, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public DocRsp getDocIndexingStatus(String difyAuthId, String datasetId, String batch) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.getDocIndexingStatus(datasetId, batch, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public void deleteDoc(String difyAuthId, String datasetId, String documentId) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            datasetApiProxy.deleteDoc(datasetId, documentId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public void getDocList(String difyAuthId, String datasetId, String keyword, Integer page, Integer limit) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            datasetApiProxy.getDocList(datasetId, keyword, page, limit, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
     }
 
     public class Segment {
+        public SegmentRsp createDocSegment(String difyAuthId, String datasetId, String documentId, SegmentCreateReq segmentParam) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.createDocSegment(datasetId, documentId, segmentParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public SegmentRsp updateDocSegment(String difyAuthId, String datasetId, String documentId, String segmentId, SegmentCreateReq segmentParam) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.updateDocSegment(datasetId, documentId, segmentId, segmentParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public SegmentRsp getDocSegmentList(String difyAuthId, String datasetId, String documentId, String keyword, String status) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            return datasetApiProxy.getDocSegmentList(datasetId, documentId, keyword, status, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
+
+        public void deleteDocSegment(String difyAuthId, String datasetId, String documentId, String segmentId) throws BusinessException {
+            DifyAuth difyAuth = difyAuthRepository.getDifyAuth(difyAuthId);
+            UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
+            datasetApiProxy.deleteDocSegment(datasetId, documentId, segmentId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+        }
     }
 
     private int defaultPort(UriComponents uriComponents) {
