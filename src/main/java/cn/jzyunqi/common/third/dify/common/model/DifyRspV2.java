@@ -11,6 +11,6 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DifyRspV2 {
+public class DifyRspV2 extends DifyRspV1 {
     private String result;
 }

@@ -1,23 +1,23 @@
 package cn.jzyunqi.common.third.dify;
 
 import cn.jzyunqi.common.exception.BusinessException;
+import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyStreamApiProxy;
 import cn.jzyunqi.common.third.dify.api.enums.Rating;
 import cn.jzyunqi.common.third.dify.api.enums.ResponseMode;
 import cn.jzyunqi.common.third.dify.api.enums.WorkflowStatus;
-import cn.jzyunqi.common.third.dify.api.model.AppConfigInfoData;
-import cn.jzyunqi.common.third.dify.api.model.AppInfoData;
-import cn.jzyunqi.common.third.dify.api.model.AudioToTextData;
-import cn.jzyunqi.common.third.dify.api.model.BlockingChatData;
-import cn.jzyunqi.common.third.dify.api.model.BlockingWorkflowData;
-import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
-import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
-import cn.jzyunqi.common.third.dify.api.model.ConversationData;
-import cn.jzyunqi.common.third.dify.api.model.ConversationParam;
-import cn.jzyunqi.common.third.dify.api.model.FeedbackParam;
-import cn.jzyunqi.common.third.dify.api.model.FileUploadData;
-import cn.jzyunqi.common.third.dify.api.model.MessageData;
-import cn.jzyunqi.common.third.dify.api.model.StreamingData;
+import cn.jzyunqi.common.third.dify.api.model.chat.AppConfigInfoData;
+import cn.jzyunqi.common.third.dify.api.model.chat.AppInfoData;
+import cn.jzyunqi.common.third.dify.api.model.chat.AudioToTextData;
+import cn.jzyunqi.common.third.dify.api.model.chat.BlockingChatData;
+import cn.jzyunqi.common.third.dify.api.model.chat.BlockingWorkflowData;
+import cn.jzyunqi.common.third.dify.api.model.chat.ChatMsgParam;
+import cn.jzyunqi.common.third.dify.api.model.chat.ConversationData;
+import cn.jzyunqi.common.third.dify.api.model.chat.ConversationParam;
+import cn.jzyunqi.common.third.dify.api.model.chat.FeedbackParam;
+import cn.jzyunqi.common.third.dify.api.model.chat.FileUploadData;
+import cn.jzyunqi.common.third.dify.api.model.chat.MessageData;
+import cn.jzyunqi.common.third.dify.api.model.chat.StreamingData;
 import cn.jzyunqi.common.third.dify.common.model.DifyPageRsp;
 import cn.jzyunqi.common.utils.StringUtilPlus;
 import jakarta.annotation.Resource;
@@ -51,6 +51,10 @@ public class DifyClient {
     public final Conv conv = new Conv();
     public final Tools tools = new Tools();
     public final App app = new App();
+
+    public final Dataset dataset = new Dataset();
+    public final Doc doc = new Doc();
+    public final Segment segment = new Segment();
 
     public class Chat {
         public BlockingChatData blocking(String difyAuthId, String userId, String conversationId, Map<String, Object> customParams, String message, List<ChatMsgParam.FileInfo> files) throws BusinessException {
@@ -243,6 +247,15 @@ public class DifyClient {
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
             return difyApiProxy.appMetaInfo(userId, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), replaceSlash(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
         }
+    }
+
+    public class Dataset {
+    }
+
+    public class Doc {
+    }
+
+    public class Segment {
     }
 
     private int defaultPort(UriComponents uriComponents) {

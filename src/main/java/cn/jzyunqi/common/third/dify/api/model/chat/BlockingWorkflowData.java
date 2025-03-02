@@ -1,11 +1,8 @@
-package cn.jzyunqi.common.third.dify.api.model;
+package cn.jzyunqi.common.third.dify.api.model.chat;
 
-import cn.jzyunqi.common.third.dify.api.enums.WorkflowStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Map;
 
 /**
  * @author wiiyaya

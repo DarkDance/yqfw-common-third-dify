@@ -1,4 +1,4 @@
-package cn.jzyunqi.common.third.dify.api.model;
+package cn.jzyunqi.common.third.dify.api.model.chat;
 
 import cn.jzyunqi.common.third.dify.common.model.DifyRspV2;
 import lombok.Getter;

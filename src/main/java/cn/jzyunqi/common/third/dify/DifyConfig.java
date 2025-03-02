@@ -1,5 +1,6 @@
 package cn.jzyunqi.common.third.dify;
 
+import cn.jzyunqi.common.third.dify.api.DatasetApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyStreamApiProxy;
 import cn.jzyunqi.common.third.dify.common.DifyHttpExchangeWrapper;
@@ -46,5 +47,14 @@ public class DifyConfig {
         webClientAdapter.setBlockTimeout(Duration.ofSeconds(5));
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(webClientAdapter).build();
         return factory.createClient(DifyStreamApiProxy.class);
+    }
+
+    @Bean
+    public DatasetApiProxy datasetApiProxy(WebClient.Builder webClientBuilder) {
+        WebClient webClient = webClientBuilder.clone().codecs(DifyFormatUtils::jackson2Config).build();
+        WebClientAdapter webClientAdapter = WebClientAdapter.create(webClient);
+        webClientAdapter.setBlockTimeout(Duration.ofSeconds(5));
+        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(webClientAdapter).build();
+        return factory.createClient(DatasetApiProxy.class);
     }
 }

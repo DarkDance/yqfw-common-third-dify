@@ -1,10 +1,8 @@
-package cn.jzyunqi.common.third.dify.api.model;
+package cn.jzyunqi.common.third.dify.api.model.chat;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
 
 /**
  * @author wiiyaya
@@ -13,8 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class AppInfoData {
+public class ConversationParam {
+    private String user;
     private String name;
-    private String description;
-    private List<String> tags;
+    private Boolean autoGenerate;
 }

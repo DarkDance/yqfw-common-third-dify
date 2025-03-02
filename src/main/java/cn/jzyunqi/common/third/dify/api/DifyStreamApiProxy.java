@@ -1,8 +1,8 @@
 package cn.jzyunqi.common.third.dify.api;
 
 import cn.jzyunqi.common.exception.BusinessException;
-import cn.jzyunqi.common.third.dify.api.model.ChatMsgParam;
-import cn.jzyunqi.common.third.dify.api.model.StreamingData;
+import cn.jzyunqi.common.third.dify.api.model.chat.ChatMsgParam;
+import cn.jzyunqi.common.third.dify.api.model.chat.StreamingData;
 import cn.jzyunqi.common.third.dify.common.model.DifyRspV2;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class DifyPageRsp<T> {
+public class DifyPageRsp<T> extends DifyRspV1 {
     private Integer page;
     private Integer limit;
     private Integer total;
