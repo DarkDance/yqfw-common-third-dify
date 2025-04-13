@@ -35,7 +35,7 @@ public class DifyConfig {
     public DifyApiProxy difyApiProxy(WebClient.Builder webClientBuilder) {
         WebClient webClient = webClientBuilder.clone().codecs(DifyFormatUtils::jackson2Config).build();
         WebClientAdapter webClientAdapter = WebClientAdapter.create(webClient);
-        webClientAdapter.setBlockTimeout(Duration.ofSeconds(100));
+        webClientAdapter.setBlockTimeout(Duration.ofMinutes(5));
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(webClientAdapter).build();
         return factory.createClient(DifyApiProxy.class);
     }
