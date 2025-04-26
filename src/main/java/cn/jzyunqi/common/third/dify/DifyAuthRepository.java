@@ -26,5 +26,13 @@ public abstract class DifyAuthRepository implements InitializingBean {
         return authMap.get(difyAuthId);
     }
 
+    public void addDifyAuth(DifyAuth difyAuth) {
+        authMap.put(difyAuth.getId(), difyAuth);
+    }
+
+    public void removeDifyAuth(String difyAuthId) {
+        authMap.remove(difyAuthId);
+    }
+
     public abstract List<DifyAuth> getDifyAuthList();
 }
