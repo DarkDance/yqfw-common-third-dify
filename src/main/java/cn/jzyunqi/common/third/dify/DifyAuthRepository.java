@@ -11,12 +11,4 @@ import java.util.List;
 public interface DifyAuthRepository {
 
     List<DifyAuth> getDifyAuthList();
-
-    default DifyAuth getDifyAuth(String id) {
-        if (StringUtilPlus.isEmpty(id)) {
-            return getDifyAuthList().stream().findFirst().orElse(new DifyAuth());
-        } else {
-            return getDifyAuthList().stream().filter(authInfo -> authInfo.getId().equals(id)).findFirst().orElse(new DifyAuth());
-        }
-    }
 }
