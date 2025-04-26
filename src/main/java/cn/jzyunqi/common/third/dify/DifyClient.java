@@ -71,13 +71,11 @@ public class DifyClient {
     @Resource
     private DifyAuthRepository difyAuthRepository;
 
-    private DifyAuth defaultDifyAuth;
     private final Map<String, DifyAuth> authMap = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
         List<DifyAuth> difyAuthList = difyAuthRepository.getDifyAuthList();
-        defaultDifyAuth = difyAuthList.get(0);
         for (DifyAuth difyAuth : difyAuthList) {
             authMap.put(difyAuth.getId(), difyAuth);
         }
@@ -392,10 +390,6 @@ public class DifyClient {
     }
 
     private DifyAuth choosDifyAuth(String difyAuthId) {
-        if (StringUtilPlus.isBlank(difyAuthId)) {
-            return defaultDifyAuth;
-        } else {
-            return authMap.get(difyAuthId);
-        }
+        return authMap.get(difyAuthId);
     }
 }
