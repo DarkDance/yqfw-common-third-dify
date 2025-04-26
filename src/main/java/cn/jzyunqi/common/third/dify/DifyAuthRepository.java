@@ -2,6 +2,7 @@ package cn.jzyunqi.common.third.dify;
 
 import org.springframework.beans.factory.InitializingBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,7 +17,7 @@ public abstract class DifyAuthRepository implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        java.util.List<DifyAuth> difyAuthList = getDifyAuthList();
+        java.util.List<DifyAuth> difyAuthList = initDifyAuthList();
         for (DifyAuth difyAuth : difyAuthList) {
             authMap.put(difyAuth.getId(), difyAuth);
         }
@@ -34,5 +35,9 @@ public abstract class DifyAuthRepository implements InitializingBean {
         authMap.remove(difyAuthId);
     }
 
-    public abstract List<DifyAuth> getDifyAuthList();
+    public List<DifyAuth> getDifyAuthList() {
+        return new ArrayList<>(authMap.values());
+    }
+
+    public abstract List<DifyAuth> initDifyAuthList();
 }
