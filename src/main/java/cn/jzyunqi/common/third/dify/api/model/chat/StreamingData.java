@@ -60,8 +60,8 @@ public class StreamingData {
 
     //error
     private Integer status;
-    private Integer code;
-    private Integer message;
+    private String code;
+    private String message;
 
     @Getter
     @Setter
