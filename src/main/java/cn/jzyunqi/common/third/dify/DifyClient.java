@@ -47,7 +47,7 @@ import java.util.Map;
 public class DifyClient {
 
     @Resource
-    private DifyAuthRepository difyAuthRepository;
+    private DifyAuthHelper difyAuthRepository;
 
     @Resource
     private DifyApiProxy difyApiProxy;
