@@ -22,7 +22,7 @@ import java.time.Duration;
 public class DifyConfig {
 
     @Bean
-    public DifyHttpExchangeWrapper responseCheckWrapper() {
+    public DifyHttpExchangeWrapper difyHttpExchangeWrapper() {
         return new DifyHttpExchangeWrapper();
     }
 
