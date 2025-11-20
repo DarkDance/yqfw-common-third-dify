@@ -16,11 +16,6 @@ import lombok.Setter;
 public class DifyAuth {
 
     /**
-     * 自定义的id，用于区分不同应用
-     */
-    private String id;
-
-    /**
      * dify机器人的baseUrl
      */
     private String baseUrl;
