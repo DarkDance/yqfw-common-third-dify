@@ -39,7 +39,7 @@ public interface DifyApiProxy {
 
     //发送对话消息
     @PostExchange(url = "/chat-messages")
-    BlockingChatData blockingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestHeader("X-Trace-Id") String traceId) throws BusinessException;
+    BlockingChatData blockingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestHeader(value = "X-Trace-Id", required = false) String traceId) throws BusinessException;
 
     //上传文件
     @PostExchange(url = "/files/upload", contentType = "multipart/form-data")
@@ -91,7 +91,7 @@ public interface DifyApiProxy {
 
     //执行 workflow
     @PostExchange(url = "/workflows/run")
-    BlockingWorkflowData blockingWorkflowRun(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestHeader("X-Trace-Id") String traceId) throws BusinessException;
+    BlockingWorkflowData blockingWorkflowRun(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestHeader(value = "X-Trace-Id", required = false) String traceId) throws BusinessException;
 
     //获取 workflow 日志
     @PostExchange(url = "/workflows/logs")
