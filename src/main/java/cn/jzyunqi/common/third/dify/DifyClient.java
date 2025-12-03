@@ -32,6 +32,7 @@ import cn.jzyunqi.common.third.dify.common.model.DifyPageRsp;
 import cn.jzyunqi.common.utils.StringUtilPlus;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -82,7 +83,7 @@ public class DifyClient {
 
             DifyAuth difyAuth = difyAuthRepository.choosDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
-            return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+            return difyApiProxy.blockingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey(), MDC.get("traceId"));
         }
 
         public Flux<StreamingData> streaming(String difyAuthId, String userId, String conversationId, Map<String, Object> customParams, String message, List<ChatMsgParam.FileInfo> files) throws BusinessException {
@@ -97,7 +98,7 @@ public class DifyClient {
 
             DifyAuth difyAuth = difyAuthRepository.choosDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
-            return difyStreamApiProxy.streamingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+            return difyStreamApiProxy.streamingChat(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey(), MDC.get("traceId"));
         }
 
         public void streamingStop(String difyAuthId, String userId, String taskId) throws BusinessException {
@@ -120,7 +121,7 @@ public class DifyClient {
 
             DifyAuth difyAuth = difyAuthRepository.choosDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
-            return difyApiProxy.blockingWorkflowRun(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+            return difyApiProxy.blockingWorkflowRun(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey(), MDC.get("traceId"));
         }
 
         public Flux<StreamingData> streaming(String difyAuthId, String userId, Map<String, Object> customParams, List<ChatMsgParam.FileInfo> files) throws BusinessException {
@@ -132,7 +133,7 @@ public class DifyClient {
 
             DifyAuth difyAuth = difyAuthRepository.choosDifyAuth(difyAuthId);
             UriComponents uriComponents = UriComponentsBuilder.fromUriString(difyAuth.getBaseUrl()).build();
-            return difyStreamApiProxy.streamingWorkflowRun(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey());
+            return difyStreamApiProxy.streamingWorkflowRun(chatMsgParam, uriComponents.getScheme(), uriComponents.getHost(), defaultPort(uriComponents), findContextPath(uriComponents.getPath()), "Bearer " + difyAuth.getApiKey(), MDC.get("traceId"));
         }
 
         public void streamingStop(String difyAuthId, String userId, String taskId) throws BusinessException {

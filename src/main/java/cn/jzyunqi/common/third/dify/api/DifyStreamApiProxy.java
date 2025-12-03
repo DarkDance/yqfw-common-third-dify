@@ -4,6 +4,7 @@ import cn.jzyunqi.common.exception.BusinessException;
 import cn.jzyunqi.common.third.dify.api.model.chat.ChatMsgParam;
 import cn.jzyunqi.common.third.dify.api.model.chat.StreamingData;
 import cn.jzyunqi.common.third.dify.common.model.DifyRspV2;
+import org.aspectj.weaver.tools.Trace;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,7 +21,7 @@ public interface DifyStreamApiProxy {
 
     //发送对话消息
     @PostExchange(url = "/chat-messages", accept = {"text/event-stream"})
-    Flux<StreamingData> streamingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    Flux<StreamingData> streamingChat(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestHeader("X-Trace-Id") String traceId) throws BusinessException;
 
     //停止响应
     @PostExchange(url = "/chat-messages/{taskId}/stop", accept = {"application/json"})
@@ -28,6 +29,6 @@ public interface DifyStreamApiProxy {
 
     //执行 workflow
     @PostExchange(url = "/workflows/run")
-    Flux<StreamingData> streamingWorkflowRun(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization) throws BusinessException;
+    Flux<StreamingData> streamingWorkflowRun(@RequestBody ChatMsgParam chatMsgParam, @PathVariable String scheme, @PathVariable String host, @PathVariable int port, @PathVariable String path, @RequestHeader("Authorization") String authorization, @RequestHeader("X-Trace-Id") String traceId) throws BusinessException;
 
 }
