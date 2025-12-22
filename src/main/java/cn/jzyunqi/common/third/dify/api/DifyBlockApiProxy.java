@@ -35,7 +35,7 @@ import org.springframework.web.service.annotation.PostExchange;
  */
 @DifyHttpExchange
 @HttpExchange(url = "{scheme}://{host}:{port}/{path}", contentType = "application/json; charset=utf-8", accept = {"application/json"})
-public interface DifyApiProxy {
+public interface DifyBlockApiProxy {
 
     //发送对话消息
     @PostExchange(url = "/chat-messages")

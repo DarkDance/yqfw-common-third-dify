@@ -1,11 +1,10 @@
 package cn.jzyunqi.common.third.dify;
 
-import cn.jzyunqi.common.third.dify.api.DatasetApiProxy;
-import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
+import cn.jzyunqi.common.third.dify.api.DifyDatasetApiProxy;
+import cn.jzyunqi.common.third.dify.api.DifyBlockApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyStreamApiProxy;
 import cn.jzyunqi.common.third.dify.common.DifyHttpExchangeWrapper;
 import cn.jzyunqi.common.third.dify.common.utils.DifyFormatUtils;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,12 +31,12 @@ public class DifyConfig {
     }
 
     @Bean
-    public DifyApiProxy difyApiProxy(WebClient.Builder webClientBuilder) {
+    public DifyBlockApiProxy difyBlockApiProxy(WebClient.Builder webClientBuilder) {
         WebClient webClient = webClientBuilder.clone().codecs(DifyFormatUtils::jackson2Config).build();
         WebClientAdapter webClientAdapter = WebClientAdapter.create(webClient);
         webClientAdapter.setBlockTimeout(Duration.ofMinutes(5));
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(webClientAdapter).build();
-        return factory.createClient(DifyApiProxy.class);
+        return factory.createClient(DifyBlockApiProxy.class);
     }
 
     @Bean
@@ -50,11 +49,11 @@ public class DifyConfig {
     }
 
     @Bean
-    public DatasetApiProxy datasetApiProxy(WebClient.Builder webClientBuilder) {
+    public DifyDatasetApiProxy difyDatasetApiProxy(WebClient.Builder webClientBuilder) {
         WebClient webClient = webClientBuilder.clone().codecs(DifyFormatUtils::jackson2Config).build();
         WebClientAdapter webClientAdapter = WebClientAdapter.create(webClient);
         webClientAdapter.setBlockTimeout(Duration.ofSeconds(5));
         HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(webClientAdapter).build();
-        return factory.createClient(DatasetApiProxy.class);
+        return factory.createClient(DifyDatasetApiProxy.class);
     }
 }

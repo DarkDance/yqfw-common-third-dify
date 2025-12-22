@@ -1,8 +1,8 @@
 package cn.jzyunqi.common.third.dify;
 
 import cn.jzyunqi.common.exception.BusinessException;
-import cn.jzyunqi.common.third.dify.api.DatasetApiProxy;
-import cn.jzyunqi.common.third.dify.api.DifyApiProxy;
+import cn.jzyunqi.common.third.dify.api.DifyDatasetApiProxy;
+import cn.jzyunqi.common.third.dify.api.DifyBlockApiProxy;
 import cn.jzyunqi.common.third.dify.api.DifyStreamApiProxy;
 import cn.jzyunqi.common.third.dify.api.enums.Rating;
 import cn.jzyunqi.common.third.dify.api.enums.ResponseMode;
@@ -51,13 +51,13 @@ public class DifyClient {
     private DifyAuthHelper difyAuthRepository;
 
     @Resource
-    private DifyApiProxy difyApiProxy;
+    private DifyBlockApiProxy difyApiProxy;
 
     @Resource
     private DifyStreamApiProxy difyStreamApiProxy;
 
     @Resource
-    private DatasetApiProxy datasetApiProxy;
+    private DifyDatasetApiProxy datasetApiProxy;
 
     public final Chat chat = new Chat();
     public final Workflow workflow = new Workflow();
@@ -368,14 +368,14 @@ public class DifyClient {
     private int defaultPort(UriComponents uriComponents) {
         int port = uriComponents.getPort();
         if (port == -1) {
-            return StringUtilPlus.equalsIgnoreCase(uriComponents.getScheme(), "http") ? 80 : 443;
+            return StringUtilPlus.CI.equals(uriComponents.getScheme(), "http") ? 80 : 443;
         } else {
             return port;
         }
     }
 
     private static String findContextPath(String path) {
-        return StringUtilPlus.defaultString(StringUtilPlus.splitGetFirst(path, "/"));
+        return StringUtilPlus.defaultString(StringUtilPlus.Ext.splitGetFirst(path, "/"));
     }
 
 }

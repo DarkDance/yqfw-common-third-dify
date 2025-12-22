@@ -32,7 +32,7 @@ import org.springframework.web.service.annotation.PostExchange;
  */
 @DifyHttpExchange
 @HttpExchange(url = "{scheme}://{host}:{port}/{path}", contentType = "application/json; charset=utf-8", accept = {"application/json"})
-public interface DatasetApiProxy {
+public interface DifyDatasetApiProxy {
 
     //创建空知识库
     @PostExchange(url = "/datasets")
