@@ -368,14 +368,14 @@ public class DifyClient {
     private int defaultPort(UriComponents uriComponents) {
         int port = uriComponents.getPort();
         if (port == -1) {
-            return StringUtilPlus.CI.equals(uriComponents.getScheme(), "http") ? 80 : 443;
+            return StringUtilPlus.equalsIgnoreCase(uriComponents.getScheme(), "http") ? 80 : 443;
         } else {
             return port;
         }
     }
 
     private static String findContextPath(String path) {
-        return StringUtilPlus.defaultString(StringUtilPlus.Ext.splitGetFirst(path, "/"));
+        return StringUtilPlus.defaultString(StringUtilPlus.splitGetFirst(path, "/"));
     }
 
 }
