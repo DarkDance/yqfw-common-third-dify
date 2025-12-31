@@ -40,7 +40,7 @@ public class DifyHttpExchangeWrapper {
                 throw new BusinessException("common_error_dify_http_exchange_failed", difyRsp.getCode(), difyRsp.getMessage());
             }
             log.debug("======difyHttpExchange[{}] proceed throw exception=======", proceedingJoinPoint.getSignature().getName());
-            throw new BusinessException("common_error_dify_http_exchange_error", e);
+            throw new BusinessException(e, "common_error_dify_http_exchange_error");
         }
         log.debug("======difyHttpExchange[{}] end=======", proceedingJoinPoint.getSignature().getName());
         return resultObj;
