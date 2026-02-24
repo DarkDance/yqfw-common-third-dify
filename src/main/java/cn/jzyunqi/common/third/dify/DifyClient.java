@@ -375,7 +375,7 @@ public class DifyClient {
     }
 
     private static String findContextPath(String path) {
-        return StringUtilPlus.defaultString(StringUtilPlus.splitGetFirst(path, "/"));
+        return StringUtilPlus.defaultString(StringUtilPlus.splitGetFirst(path, "/"), "/v1");
     }
 
 }
