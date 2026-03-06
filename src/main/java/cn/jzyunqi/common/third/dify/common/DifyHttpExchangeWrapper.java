@@ -34,12 +34,12 @@ public class DifyHttpExchangeWrapper {
             resultObj = proceedingJoinPoint.proceed();
         } catch (Throwable e) {
             if(e.getCause() instanceof BusinessException be){
-                log.debug("======difyHttpExchange[{}] proceed success=======", proceedingJoinPoint.getSignature().getName());
+                log.warn("======difyHttpExchange[{}] proceed success=======", proceedingJoinPoint.getSignature().getName());
                 String body = be.getCode();
                 DifyRspV1 difyRsp = DifyFormatUtils.JSON_MAPPER.readValue(body, DifyRspV1.class);
                 throw new BusinessException("common_error_dify_http_exchange_failed", difyRsp.getCode(), difyRsp.getMessage());
             }
-            log.debug("======difyHttpExchange[{}] proceed throw exception=======", proceedingJoinPoint.getSignature().getName());
+            log.error("======difyHttpExchange[{}] proceed throw exception=======", proceedingJoinPoint.getSignature().getName(), e);
             throw new BusinessException(e, "common_error_dify_http_exchange_error");
         }
         log.debug("======difyHttpExchange[{}] end=======", proceedingJoinPoint.getSignature().getName());
