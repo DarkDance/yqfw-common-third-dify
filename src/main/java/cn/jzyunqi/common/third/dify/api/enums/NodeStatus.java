@@ -5,5 +5,5 @@ package cn.jzyunqi.common.third.dify.api.enums;
  * @since 2025/1/14
  */
 public enum NodeStatus {
-    running, succeeded, failed, stopped
+    status, running, succeeded, failed, stopped
 }
